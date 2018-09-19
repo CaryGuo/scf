@@ -1,0 +1,16 @@
+{
+    "name": "caryguo/swoole-framework",
+    "description": "a swoole aysn framework",
+    "type": "project",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "catfan/medoo": "^1.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cauchy Guo",
+            "email": "kexin.guo@gmail.com"
+        }
+    ]
+}
