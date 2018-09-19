@@ -4,7 +4,8 @@
     "type": "project",
     "require": {
         "guzzlehttp/guzzle": "^6.3",
-        "catfan/medoo": "^1.5"
+        "catfan/medoo": "^1.5",
+        "hassankhan/config": "^1.0"
     },
     "license": "MIT",
     "authors": [
