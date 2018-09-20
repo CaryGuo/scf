@@ -9,6 +9,7 @@
 namespace framework;
 
 use Noodlehaus\Config;
+use Noodlehaus\Exception\EmptyDirectoryException;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server as SwooleServer;
@@ -26,13 +27,12 @@ class Server
     {
         $this->initPathInfo();
         $this->initAutoload();
-        $this->initService();
         $this->initConfig();
-        var_dump(dirname(__FILE__)); die;
+        $this->initService();
     }
 
     public function initPathInfo() {
-//        defined('ROOT_PATH', );
+        define('ROOT_PATH', dirname(dirname(__FILE__)));
     }
 
 
@@ -52,16 +52,32 @@ class Server
                 include $fileName;
             }
         });
-        include_once '../vendor/autoload.php';
+        include_once ROOT_PATH . '/vendor/autoload.php';
+    }
+
+    /**
+     * 初始化config
+     * init config module
+     * @param  void
+     * @return void
+     */
+    public function initConfig() {
+        try{
+            $this->config = new Config(ROOT_PATH . '/config');
+        }catch (EmptyDirectoryException $exception) {
+            echo $exception->getTrace();
+            die;
+        }
     }
 
     /**
      * 初始化服务
+     * init server
      * @param  void
      * @return void
      */
     public function initService() {
-        $http = new SwooleServer('127.0.0.1', 9001);
+        $http = new SwooleServer($this->config['server'], 9001);
 
         $http->on("request", function (Request $request, Response $response) {
             $response->header("Content-Type", "text/plain");
@@ -71,7 +87,5 @@ class Server
         $http->start();
     }
 
-    public function initConfig() {
-        // $this->config = Config::load();
-    }
+
 }
